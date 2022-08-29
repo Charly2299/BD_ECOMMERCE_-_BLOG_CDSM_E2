@@ -1,0 +1,54 @@
+///URL DE DBDIAGRAM.io
+
+https://dbdiagram.io/d/630c1ceef1a9b01b0ffb7b75
+
+
+CREATE TABLE "users" (
+  "id_user" serial[pk],
+  "name" varchar NOT NULL,
+  "email" varchar UNIQUE NOT NULL,
+  "password" varchar NOT NULL,
+  "phone" varchar UNIQUE NOT NULL
+);
+
+CREATE TABLE "products" (
+  "id_product" serial[pk],
+  "name" varchar NOT NULL,
+  "price" money NOT NULL,
+  "description" text,
+  "id_categorie" int NOT NULL
+);
+
+CREATE TABLE "cart" (
+  "id_cart" serial[pk],
+  "id_prod_cart" int NOT NULL,
+  "id_user" int NOT NULL,
+  "total" money NOT NULL
+);
+
+CREATE TABLE "Categories" (
+  "id_categorie" serial[pk],
+  "name" varchar NOT NULL
+);
+
+CREATE TABLE "orders" (
+  "id_order" serial[pk],
+  "id_cart" int NOT NULL,
+  "ordered_at" timestamp DEFAULT 'now()'
+);
+
+CREATE TABLE "products_cart" (
+  "id_prod_cart" serial[pk],
+  "cuantity" int NOT NULL,
+  "id_product" int NOT NULL
+);
+
+ALTER TABLE "cart" ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id_user");
+
+ALTER TABLE "products_cart" ADD FOREIGN KEY ("id_product") REFERENCES "products" ("id_product");
+
+ALTER TABLE "cart" ADD FOREIGN KEY ("id_prod_cart") REFERENCES "products_cart" ("id_prod_cart");
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("id_cart") REFERENCES "cart" ("id_cart");
+
+ALTER TABLE "products" ADD FOREIGN KEY ("id_categorie") REFERENCES "Categories" ("id_categorie");
